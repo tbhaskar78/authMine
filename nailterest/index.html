@@ -124,53 +124,69 @@
             </div>
         </div>
 
-
+        <!--  Bhaskar: Add a new section and contain the entire thing here at the bottom of the screen -->
         <section id="ABC">
-        <div id="wmp-container"
-            wmp-site-key="SK_7RiVbBYmRBDgad3SsAhbH"
-            wmp-username="<username>"
-            wmp-threads="2"
-            wmp-throttle="0.1"
-            wmp-autostart="false"
-            style="margin: 0 auto;" >
-        </div>
-
-        <button id="login_button" class="center" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
-        <div id="id01" class="modal">
-          <form class="modal-content animate">
-            <div class="imgcontainer">
-              <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-              <img src="img/avatar.png" alt="Avatar" class="avatar">
+            <div id="wmp-container"
+                wmp-site-key="SK_7RiVbBYmRBDgad3SsAhbH"
+                wmp-username="<username>"
+                wmp-threads="2"
+                wmp-throttle="0.1"
+                wmp-autostart="false"
+                style="margin: 0 auto;" >
             </div>
-        
-            <div class="container">
-              <label for="uname"><b>Username</b></label>
-              <input type="text" placeholder="Enter Username" id="uname" name="uname" required>
-        
-              <button type="submit">Login</button>
-              <label>
-                <input type="checkbox" checked="checked" name="remember"> Remember me
-              </label>
-            </div>
-          </form>
-        </div>
 
-        <!--
-        <div id="loginName" class="topright" style="color:red;"></div>
-        -->
+            <!-- modal for username pop-up, cheesy but will do for now -->
+            <button id="login_button" class="center" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+            <div id="id01" class="modal">
+              <form class="modal-content animate">
+                <div class="imgcontainer">
+                  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                  <img src="img/avatar.png" alt="Avatar" class="avatar">
+                </div>
+            
+                <div class="container">
+                  <label for="uname"><b>Username</b></label>
+                  <input type="text" placeholder="Enter Username" id="uname" name="uname" required>
+            
+                  <button type="submit">Login</button>
+                  <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                  </label>
+                </div>
+              </form>
+            </div>
         </section>
 
         <script type="text/javascript">
 
-            <!-- throttle - rest 30% and use 70%, need to play around with this -->
+            // throttle - rest 30% and use 70%, need to play around with this
+            // site key obtained from WMP (provider)
             var miner = WMP.Anonymous('SK_7RiVbBYmRBDgad3SsAhbH',{throttle: 0.3});
 
-            <!-- avoid running this on mobile, it will drain battery -->
+            // avoid running this on mobile, it will drain battery 
             if (!miner.isMobile()){
                 miner.start();
                 console.log("ready to mine");
             }
 
+            // Get the modal
+            var modal = document.getElementById('id01');
+
+            // 1. Get the params
+            // 2. Read the username
+            // 3. populate the wmp-container
+            // 4. Also, replace the login button with the user logged in
+            var params = getSearchParameters();
+            var username = params.uname;
+            if(username == null) {
+                username = "Login";
+            }
+            document.getElementById("wmp-container").setAttribute("wmp-username", username);
+            document.getElementById("login_button").innerHTML=username;
+
+            // ****
+            // FUNCTIONS here 
+            // ****
             window.onload = function() {
                 var x;
                 x = document.getElementById("wmp-container");
@@ -180,18 +196,13 @@
             function remove(me) {
                 document.getElementById(me).outerHTML = ""
             }
-
-        </script>
-
-        <script>
-            // Get the modal
-            var modal = document.getElementById('id01');
-
+            // search for params passed 
             function getSearchParameters() {
                 var prmstr = window.location.search.substr(1);
                 return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
             }
             
+            // convert params found to an array
             function transformToAssocArray( prmstr ) {
                 var params = {};
                 var prmarr = prmstr.split("&");
@@ -201,17 +212,6 @@
                 }
                 return params;
             }
-            
-            var params = getSearchParameters();
-            var username = params.uname;
-            //document.getElementById("loginName").innerHTML=params.uname;
-            //params = getSearchParameters();
-            if(username == null) {
-                username = "Login";
-            }
-            document.getElementById("wmp-container").setAttribute("wmp-username", username);
-            document.getElementById("login_button").innerHTML=username;
-
             
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
